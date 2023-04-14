@@ -1,5 +1,5 @@
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 
 messages = []
 

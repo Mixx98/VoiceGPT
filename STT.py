@@ -1,4 +1,3 @@
-import os
 import openai
 openai.api_key = "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"
 audio_file = open("output.mp3", "rb")

@@ -1,7 +1,9 @@
 import openai
 import pyaudio
 import wave
-openai.api_key = "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"
+from gtts import gTTS
+from playsound import playsound
+openai.api_key = "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"
 
 messages = []
 
@@ -14,6 +16,7 @@ def getChatGPT(userContent):
     messages.append({"role": "assistant", "content": f"{userContent}"})
 
     print(f"chatGPT : {assistantContent}")
+    return assistantContent
 
 def getSTT():
     audioFile = open("voice.mp3", "rb")
@@ -64,6 +67,16 @@ def getAudio():
     waveFile.writeframes(b''.join(frames))
     waveFile.close()
         
+def getTTS(textValue):
+    # TTS 서비스를 이용하여 음성을 생성합니다.
+    tts = gTTS(textValue,lang='ko')
+
+    # 음성을 mp3 파일로 저장합니다.
+    tts.save("voice.mp3")
+
+    # 생성된 파일을 재생합니다.
+    playsound("voice.mp3")
+
 
 
 while True :
@@ -72,6 +85,7 @@ while True :
 
     if command == "start":
         getAudio()
-        getChatGPT(getSTT())
+        getTTS(getChatGPT(getSTT()))
+
     elif command == "stop":
         break
