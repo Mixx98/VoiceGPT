@@ -1,9 +1,10 @@
+import os
 import openai
 import pyaudio
 import wave
 from gtts import gTTS
 from playsound import playsound
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 messages = []
 

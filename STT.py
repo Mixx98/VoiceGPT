@@ -1,5 +1,6 @@
 import openai
-openai.api_key = "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"
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")
 audio_file = open("output.mp3", "rb")
 transcript = openai.Audio.transcribe("whisper-1", audio_file)
 
