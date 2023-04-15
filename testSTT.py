@@ -9,6 +9,7 @@ try:
     text = r.recognize_google(audio, language='ko')
     print(text)
 except sr.UnknownValueError:
-    print("인식 실패")
-except sr.RequestError:
-    print('요청 실패')
+    print("인식 실패") # 음성 인식 실패
+except sr.RequestError as e:
+    print('요청 실패 : {0}'.format(e)) # 기타 다른 에러
+
