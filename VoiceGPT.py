@@ -1,8 +1,8 @@
 import os
 import openai
+import speech_recognition as sr
 from gtts import gTTS
 from playsound import playsound
-import speech_recognition as sr
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 language = "ko"
@@ -10,17 +10,14 @@ language = "ko"
 messages = []
 
 def getChatGPT(userContent):
-    # try:
-        messages.append({"role": "user", "content": f"{userContent}"})
+    messages.append({"role": "user", "content": f"{userContent}"})
 
-        completion = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=messages)
+    completion = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=messages)
 
-        assistantContent = completion.choices[0].message["content"].strip()
-        messages.append({"role": "assistant", "content": f"{userContent}"})
+    assistantContent = completion.choices[0].message["content"].strip()
+    messages.append({"role": "assistant", "content": f"{assistantContent}"})
 
-        return assistantContent
-    # except:
-    #     pass
+    return assistantContent
 
 
 def getSTT():
@@ -40,7 +37,7 @@ def getSTT():
     except sr.RequestError as e:
         print('요청 실패 : {0}'.format(e)) # 기타 다른 에러
 
-        
+
 def getTTS(content):
     try:
         tts = gTTS(content,lang=language)
@@ -50,15 +47,21 @@ def getTTS(content):
         playsound("voice.mp3")
     except PermissionError as e:
         print(e)
-        
 
 
-while True :
-    print("start : 작동시작 / stop : 작동중지")
-    command = input()
+def main():
+    while True:
+        print("start : 작동시작 / stop : 작동중지")
+        command = input()
 
-    if command == "start":
-        getTTS(getChatGPT(getSTT()))
+        if command == "start":
+            userContent = getSTT()
+            assistantContent = getChatGPT(userContent)
+            getTTS(assistantContent)
 
-    elif command == "stop":
-        break
+        elif command == "stop":
+            break
+
+
+if __name__ == "__main__":
+    main()
